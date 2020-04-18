@@ -28,7 +28,8 @@ void Robot::load(const std::string &filename)
     common::getYamlNode("L", filename, L_);
     common::getYamlNode("l", filename, l_);
     common::getYamlNode("r", filename, r_);
-    common::getYamlNode("b", filename, b_);
+    common::getYamlNode("bm", filename, bm_);
+    common::getYamlNode("bp", filename, bp_);
 
     // Initialize loggers and log initial data
     std::string logname_true_state;
@@ -82,12 +83,12 @@ void Robot::f(const xVector &x, const uVector &u, xVector &dx)
     double dtheta2 = dtheta*dtheta;
     
     // Equations of motion
-    dx(DX) = ((mp_*g*l_*cos_theta - dtheta2*Jmp)*r_*mp_*l_*sin_theta - Km_*qpq*Jmp)/denom;
+    dx(DX) = (r_*mp_*l_*((mp_*g*l_*cos_theta - Jmp*dtheta2)*sin_theta - r_*bp_*dtheta*cos_theta) - Km_*Jmp*qpq)/denom;
     dx(DPSI) = L_*Km_*(qr - ql)/(r_*(Jz_ + Jp_*theta));
     dx(THETA) = dtheta;
-    dx(DTHETA) = (mp_*l_*(r_*M*g*sin_theta - (Km_*qpq + r_*mp_*l_*dtheta2*sin_theta)*cos_theta))/denom;
-    dx(OMEGAL) = (Km_*ql - b_*omegal)/Jm_;
-    dx(OMEGAR) = (Km_*qr - b_*omegar)/Jm_;
+    dx(DTHETA) = (mp_*l_*(M*r_*g*sin_theta - (Km_*qpq + r_*mp_*l_*dtheta2*sin_theta)*cos_theta) - r_*M*bp_*dtheta)/denom;
+    dx(OMEGAL) = (Km_*ql - bm_*omegal)/Jm_;
+    dx(OMEGAR) = (Km_*qr - bm_*omegar)/Jm_;
     dx(QL) = (Vl - Rm_*ql - Km_*omegal)/Lm_;
     dx(QR) = (Vr - Rm_*qr - Km_*omegar)/Lm_;
 }

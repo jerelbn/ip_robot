@@ -17,16 +17,16 @@ logname_true_state: /tmp/robot_true_state.log
 # Physical parameters
 x0: [0, # DX
      0, # DPSI
-     0.01, # THETA
+     0, # THETA
      0, # DTHETA
      0, # OMEGAL
      0, # OMEGAR
      0, # QL
      0] # QR
 
-mc: 0.2
-mp: 0.1
-Jy: 0.11
+mc: 0.3
+mp: 0.2
+Jy: 0.011
 Jz: 9.0e-5
 Jp: 0.01
 Jm: 0.0013
@@ -36,7 +36,8 @@ Rm: 1.0
 L: 0.1
 l: 0.2
 r: 0.05
-b: 0.1
+bm: 0.1
+bp: 0.1
 
 max_voltage: 12.0
 

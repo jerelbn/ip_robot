@@ -62,7 +62,8 @@ private:
     double L_;
     double l_;
     double r_;
-    double b_;
+    double bm_;
+    double bp_;
 
     common::Logger state_log_;
 };
