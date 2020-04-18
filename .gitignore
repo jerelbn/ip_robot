@@ -1,2 +1,6 @@
 build/
+__pycache__/
 *.vscode
+*.lyx~
+*.lyx#
+*.pyc

@@ -1,0 +1,105 @@
+# Parameters for time, randomness, environment, etc.
+tf: 10.0
+dt: 0.001
+seed: -1 # negative forces random seed
+
+grid_cell_fraction: 0.2 # Grid cell fraction of image size (smaller fraction = more image features)
+landmark_depth_variation: 1.0 # Maximum variation in depth of generated landmarks (m)
+x_dim: 20 # Total box length in x dimension (m)
+y_dim: 20 # Total box length in y dimension (m)
+z_dim: 5 # Total box z dimension (m)
+
+
+# Log filenames
+logname_true_state: /tmp/robot_true_state.log
+
+
+# Physical parameters
+x0: [0, # DX
+     0, # DPSI
+     0.01, # THETA
+     0, # DTHETA
+     0, # OMEGAL
+     0, # OMEGAR
+     0, # QL
+     0] # QR
+
+mc: 0.2
+mp: 0.1
+Jy: 0.11
+Jz: 9.0e-5
+Jp: 0.01
+Jm: 0.0013
+Km: 0.01
+Lm: 0.5
+Rm: 1.0
+L: 0.1
+l: 0.2
+r: 0.05
+b: 0.1
+
+max_voltage: 12.0
+
+
+# Controller
+
+
+# Trajectory
+## 0: waypoints
+## 1: trajectory
+path_type: 1
+
+waypoints: [5, 0,
+            -5, 0,
+            0, 0,
+            0, 5,
+            0, -5,
+            0, 0]
+waypoint_threshold: 0.1
+waypoint_velocity_threshold: 0.5
+
+traj_nom_x: 0
+traj_nom_y: 0
+traj_delta_x: 10
+traj_delta_y: 10
+traj_x_period: 20
+traj_y_period: 10
+
+
+# IMU
+imu_enabled: false
+use_imu_truth: false
+imu_update_rate: 2000
+accel_noise_stdev: 1.0
+accel_bias_init_bound: 1.0
+accel_walk_stdev: 0.1
+gyro_noise_stdev: 0.1
+gyro_bias_init_bound: 0.2
+gyro_walk_stdev: 0.01
+p_bu: [0, 0, 0] # translation from body to IMU in body frame
+q_bu: [1, 0, 0, 0] # rotation from body to IMU frame
+
+
+# Rotary encoders
+encoder_enabled: false
+use_encoder_truth: false
+encoder_update_rate: 2000
+encoder_noise_stdev: 0.001
+encoder_resolution: 1024 # number of rotary encoder ticks per revolution
+
+
+# Camera
+camera_enabled: false
+use_camera_truth: false
+camera_max_features: 1000 # maximum number of features to project into image
+camera_update_rate: 30
+camera_time_delay: 0.0
+pixel_noise_stdev: 0.5
+depth_noise_stdev: 1.0
+image_size: [640, 480]
+camera_matrix: [480,   0, 320,
+                  0, 480, 240,
+                  0,   0,   1]
+p_bcb: [0, 0, 0] # translation from body to camera-body in body frame
+q_bcb: [1, 0, 0, 0] # rotation from body to camera-body
+save_pixel_measurements: false
