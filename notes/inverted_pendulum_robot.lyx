@@ -1,0 +1,950 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Inverted Pendulum Robot
+\end_layout
+
+\begin_layout Author
+Jerel Nielsen
+\end_layout
+
+\begin_layout Section
+Notation
+\end_layout
+
+\begin_layout Section
+Coordinate Frames
+\end_layout
+
+\begin_layout Standard
+We have the following coordinate reference frames:
+\end_layout
+
+\begin_layout Itemize
+Inertial
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+fixed forward-right-down coordinate frame with origin at robot boot-up position
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Shaft
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+aligned with inertial on boot-up
+\end_layout
+
+\begin_layout Itemize
+x-axis forward, centered between wheels
+\end_layout
+
+\begin_layout Itemize
+y-axis right, aligned with shaft
+\end_layout
+
+\begin_layout Itemize
+z-axis down, aligned with gravity
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Pendulum
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+aligned with shaft frame when pendulum is upright and rotates with the pendulum
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+IMU
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+x-y-z axes aligned with IMU datasheet axes
+\end_layout
+
+\begin_layout Itemize
+constant rotation and translation from pendulum frame
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Camera
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+x-axis right
+\end_layout
+
+\begin_layout Itemize
+y-axis down
+\end_layout
+
+\begin_layout Itemize
+z-axis forward along optical axis
+\end_layout
+
+\begin_layout Itemize
+constant rotation and translation from pendulum frame
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Equations of Motion
+\end_layout
+
+\begin_layout Standard
+We have the following variables of interest:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $X$
+\end_inset
+
+ : inertial forward position relative to initial point and heading
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $Y$
+\end_inset
+
+ : inertial right position relative to initial point and heading
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\psi$
+\end_inset
+
+ : heading relative to start
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\theta$
+\end_inset
+
+ : pendulum angle from upright
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\omega_{l}$
+\end_inset
+
+ : rotation rate of the left wheel
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\omega_{r}$
+\end_inset
+
+ : rotation rate of the right wheel
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $v_{l}$
+\end_inset
+
+ : velocity of the left wheel
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $v_{r}$
+\end_inset
+
+ : velocity of the right wheel
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $r$
+\end_inset
+
+ : radius of each wheel
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $r_{l}$
+\end_inset
+
+ : turn radius of left wheel
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $r_{r}$
+\end_inset
+
+ : turn radius of right wheel
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $L$
+\end_inset
+
+ : half of wheel separation
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\kappa$
+\end_inset
+
+ : inverse of turn radius of curvature (zero is driving in a straight line)
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $J_{y}$
+\end_inset
+
+ : inertia of pendulum along shaft y-axis
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $m_{p}$
+\end_inset
+
+ : mass of pendulum
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $m_{c}$
+\end_inset
+
+ : mass of vehicle not including the pendulum
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $l$
+\end_inset
+
+ : length from cart to pendulum center of mass
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $K_{m}$
+\end_inset
+
+ : motor torque or back-emf constant
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $L_{m}$
+\end_inset
+
+ : motor inductance
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $R_{m}$
+\end_inset
+
+ : motor resistance
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $b$
+\end_inset
+
+ : motor drag
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $J_{m}$
+\end_inset
+
+ : motor inertia
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $V$
+\end_inset
+
+ : motor input voltage
+\end_layout
+
+\begin_layout Subsection
+Kinematics and Dynamics
+\end_layout
+
+\begin_layout Standard
+The free body diagram is shown below.
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Graphics
+	filename figures/inverted_pendulum_cart_fbd.pdf
+	lyxscale 75
+	scale 75
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Noting that 
+\begin_inset Formula $F_{f}=F_{l}+F_{r}$
+\end_inset
+
+ and summing horizontal and vertical forces gives
+\begin_inset Formula 
+\begin{align}
+\sum F_{c,x}=m_{c}\ddot{x}_{c} & =F_{l}+F_{r}+N_{x}\\
+\sum F_{c,z}=m_{c}\ddot{z}_{c} & =N_{z}+m_{c}g-N_{gr}\\
+\sum F_{p,x}=m_{p}\ddot{x}_{p} & =-N_{x}\\
+\sum F_{p,z}=m_{p}\ddot{z}_{p} & =m_{p}g-N_{z},
+\end{align}
+
+\end_inset
+
+where rigid body kinematics also yields
+\begin_inset Formula 
+\begin{align}
+\ddot{x}_{p} & =\ddot{x}_{c}-\ddot{\theta}l\cos\theta+l\dot{\theta}^{2}\sin\theta\\
+\ddot{z}_{p} & =\ddot{z}_{c}+\ddot{\theta}l\sin\theta+l\dot{\theta}^{2}\cos\theta.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Using these kinematic relationships results in
+\begin_inset Formula 
+\begin{align}
+N_{x} & =-m_{p}\left(\ddot{x}_{c}-\ddot{\theta}l\cos\theta+l\dot{\theta}^{2}\sin\theta\right)\\
+N_{z} & =m_{p}\left(g-\ddot{z}_{c}-\ddot{\theta}l\sin\theta-l\dot{\theta}^{2}\cos\theta\right),
+\end{align}
+
+\end_inset
+
+where substituting these into the force summations on the cart gives
+\begin_inset Formula 
+\begin{align}
+\ddot{x}_{c} & =\frac{F_{l}+F_{r}-m_{p}\left(l\dot{\theta}^{2}\sin\theta-\ddot{\theta}l\cos\theta\right)}{m_{c}+m_{p}}\\
+\ddot{z}_{c} & =g-\frac{m_{p}}{m_{c}+m_{p}}\left(l\dot{\theta}^{2}\cos\theta+\ddot{\theta}l\sin\theta\right)-N_{gr}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The summation of torques about the pendulum center of mass along the 
+\begin_inset Formula $y$
+\end_inset
+
+ axis is given by
+\begin_inset Formula 
+\begin{equation}
+\sum\tau_{y}=J_{y}\ddot{\theta}=N_{z}l\sin\theta-N_{x}l\cos\theta,
+\end{equation}
+
+\end_inset
+
+and using the previously given force relationships yields
+\begin_inset Formula 
+\begin{equation}
+\ddot{\theta}=\frac{m_{p}l}{J_{y}+m_{p}l^{2}}\left(\left(g-\ddot{z}_{c}\right)\sin\theta+\ddot{x}_{c}\cos\theta\right).
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We're only concerned with angle and horizontal dynamics, leaving us with
+ the system
+\begin_inset Formula 
+\begin{align}
+\ddot{x}_{c} & =\frac{F_{l}+F_{r}-m_{p}\left(l\dot{\theta}^{2}\sin\theta-\ddot{\theta}l\cos\theta\right)}{m_{c}+m_{p}}\\
+\ddot{\theta} & =\frac{m_{p}l}{J_{y}+m_{p}l^{2}}\left(\left(g-\ddot{z}_{c}\right)\sin\theta+\ddot{x}_{c}\cos\theta\right),
+\end{align}
+
+\end_inset
+
+and solving for the accelerations yields
+\begin_inset Formula 
+\begin{align}
+\ddot{x}_{c} & =\frac{\left(F_{l}+F_{r}\right)\left(J_{y}+m_{p}l^{2}\right)+\left(m_{p}gl\cos\theta-\dot{\theta}^{2}\left(J_{y}+m_{p}l^{2}\right)\right)m_{p}l\sin\theta}{\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta}\\
+\ddot{\theta} & =\frac{m_{p}l\left[\left(m_{c}+m_{p}\right)g\sin\theta+\left(F_{l}+F_{r}-m_{p}l\dot{\theta}^{2}\sin\theta\right)\cos\theta\right]}{\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Summing torques about that shaft 
+\begin_inset Formula $z$
+\end_inset
+
+-axis gives
+\begin_inset Formula 
+\begin{equation}
+\sum\tau_{z}=J_{z}\left(\theta\right)\ddot{\psi}=\left(F_{l}-F_{r}\right)L,
+\end{equation}
+
+\end_inset
+
+where we highlight the fact the inertial about the 
+\begin_inset Formula $z$
+\end_inset
+
+-axis is a function of 
+\begin_inset Formula $\theta$
+\end_inset
+
+ with minimum at 
+\begin_inset Formula $\theta=0$
+\end_inset
+
+ and maximum at 
+\begin_inset Formula $\theta=\pm90^{\circ}$
+\end_inset
+
+.
+ Let's assume a linear relationship given by
+\begin_inset Formula 
+\begin{equation}
+J_{z}\left(\theta\right)=J_{z}+J_{p}\theta.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Torque about each wheel is directly related to motor torque by
+\begin_inset Formula 
+\begin{align}
+\tau_{l} & =-F_{l}r\\
+\tau_{r} & =-F_{r}r,
+\end{align}
+
+\end_inset
+
+which leaves us with the full system
+\begin_inset Formula 
+\begin{align}
+\ddot{x}_{c} & =\frac{-\left(\tau_{l}+\tau_{r}\right)\left(J_{y}+m_{p}l^{2}\right)+r\left(m_{p}gl\cos\theta-\dot{\theta}^{2}\left(J_{y}+m_{p}l^{2}\right)\right)m_{p}l\sin\theta}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
+\ddot{\theta} & =\frac{m_{p}l\left[r\left(m_{c}+m_{p}\right)g\sin\theta-\left(\tau_{l}+\tau_{r}+rm_{p}l\dot{\theta}^{2}\sin\theta\right)\cos\theta\right]}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}.\\
+\ddot{\psi} & =\frac{L\left(\tau_{r}-\tau_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A real system doesn't allow us to directly command torque.
+ However, we will use a brushless, DC motor, where motor torque 
+\begin_inset Formula $\tau_{m}$
+\end_inset
+
+ and current 
+\begin_inset Formula $q$
+\end_inset
+
+ are related by 
+\begin_inset Formula $\tau_{m}=K_{m}q$
+\end_inset
+
+ for some torque constant or back-emf constant 
+\begin_inset Formula $K_{m}$
+\end_inset
+
+.
+ Motor speed control follows the differential equations
+\begin_inset Formula 
+\begin{align}
+J_{m}\dot{\omega}+b\omega & =K_{m}q\\
+L_{m}\dot{q}+R_{m}q & =V-K_{m}\omega,
+\end{align}
+
+\end_inset
+
+where we see the relationship between torque, current, voltage, and motor
+ speed.
+ We will use and ESC that controls motor speed by varying applied voltage
+ with a PWM signal.
+ We'll use voltage as the input in reality, we actually send a signal between
+ -1 and 1 representing the percentage of maximum applied voltage.
+ The system of equations then becomes
+\begin_inset Formula 
+\begin{align}
+\ddot{x}_{c} & =\frac{-K_{m}\left(q_{l}+q_{r}\right)\left(J_{y}+m_{p}l^{2}\right)+r\left(m_{p}gl\cos\theta-\dot{\theta}^{2}\left(J_{y}+m_{p}l^{2}\right)\right)m_{p}l\sin\theta}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
+\ddot{\theta} & =\frac{m_{p}l\left[r\left(m_{c}+m_{p}\right)g\sin\theta-\left(K_{m}\left(q_{l}+q_{r}\right)+rm_{p}l\dot{\theta}^{2}\sin\theta\right)\cos\theta\right]}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}.\\
+\ddot{\psi} & =\frac{LK_{m}\left(q_{r}-q_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}\\
+\dot{\omega}_{l} & =\frac{K_{m}q_{l}-b\omega_{l}}{J_{m}}\\
+\dot{\omega}_{r} & =\frac{K_{m}q_{r}-b\omega_{r}}{J_{m}}\\
+\dot{q}_{l} & =\frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
+\dot{q}_{r} & =\frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The motor inertia 
+\begin_inset Formula $J_{m}$
+\end_inset
+
+ can be approximated as inertia of a point mass equal to the weight of the
+ entire robot revolving around the wheel as
+\begin_inset Formula 
+\begin{equation}
+J_{m}\approx\left(m_{c}+m_{p}\right)r^{2}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Forward Velocity
+\end_layout
+
+\begin_layout Standard
+The vehicle follows circular paths, except when driving in a straight line.
+ Therefore, we have the relationship
+\begin_inset Formula 
+\begin{equation}
+\dot{\psi}=\frac{v_{l}}{r_{l}}=\frac{v_{r}}{r_{r}}=\frac{\dot{x}_{c}}{r_{c}},
+\end{equation}
+
+\end_inset
+
+and the turning radii of the left and right wheels may be given by
+\begin_inset Formula 
+\begin{align}
+r_{l} & =r_{c}-L\\
+r_{r} & =r_{c}+L.
+\end{align}
+
+\end_inset
+
+This leads to
+\begin_inset Formula 
+\begin{align}
+v_{l} & =\dot{x}_{c}\left(1-\kappa L\right)\\
+v_{r} & =\dot{x}_{c}\left(1+\kappa L\right).
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Adding these together and solving for 
+\begin_inset Formula $u$
+\end_inset
+
+ gives
+\begin_inset Formula 
+\begin{equation}
+\dot{x}_{c}=\frac{v_{l}+v_{r}}{2},
+\end{equation}
+
+\end_inset
+
+which is the average of each wheel velocity.
+ Writing wheel velocities in terms of wheel angular rate and radius yields
+\begin_inset Formula 
+\begin{align}
+v_{l} & =-\omega_{l}r\\
+v_{r} & =-\omega_{r}r,
+\end{align}
+
+\end_inset
+
+and substituting this in gives
+\begin_inset Formula 
+\begin{equation}
+\dot{x}_{c}=-\frac{r}{2}\left(\omega_{l}+\omega_{r}\right).
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Taking a time derivative of this yields
+\begin_inset Formula 
+\begin{equation}
+\ddot{x}_{c}=-\frac{r}{2}\left(\dot{\omega}_{l}+\dot{\omega}_{r}\right),
+\end{equation}
+
+\end_inset
+
+which confirms that change in wheel velocity gives a change in forward velocity.
+\end_layout
+
+\begin_layout Subsection
+Heading Rate
+\end_layout
+
+\begin_layout Standard
+Heading varies according the differential velocity of the wheels.
+ We have
+\begin_inset Formula 
+\begin{equation}
+\dot{\psi}=\frac{1}{L}\left(v_{l}-v_{r}\right),
+\end{equation}
+
+\end_inset
+
+where the heading doesn't change when wheel velocities are equal.
+ Writing wheel velocities in terms of wheel angular rate and radius gives
+\begin_inset Formula 
+\begin{align}
+v_{l} & =-\omega_{l}r\\
+v_{r} & =-\omega_{r}r,
+\end{align}
+
+\end_inset
+
+and substituting this in yields
+\begin_inset Formula 
+\begin{equation}
+\dot{\psi}=\frac{r}{L}\left(\omega_{r}-\omega_{l}\right).
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Motor Angular Rate
+\end_layout
+
+\begin_layout Standard
+We use an ESC for each motor to control its angular rate and assume either
+ a quadratic model
+\begin_inset Formula 
+\begin{equation}
+\omega\left(s\right)=c_{0}s^{2}+c_{1}s+c_{2},
+\end{equation}
+
+\end_inset
+
+or a linear model
+\begin_inset Formula 
+\begin{equation}
+\omega\left(s\right)=c_{0}s,
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\omega$
+\end_inset
+
+ is now a function of the signal 
+\begin_inset Formula $s$
+\end_inset
+
+ sent to the ESC and 
+\begin_inset Formula $c_{*}$
+\end_inset
+
+ are constant coefficients.
+\end_layout
+
+\begin_layout Section
+Control
+\end_layout
+
+\begin_layout Standard
+Design controller from
+\begin_inset Formula 
+\begin{align}
+\ddot{x}_{c} & =\frac{-K_{m}\left(q_{l}+q_{r}\right)\left(J_{y}+m_{p}l^{2}\right)+r\left(m_{p}gl\cos\theta-\dot{\theta}^{2}\left(J_{y}+m_{p}l^{2}\right)\right)m_{p}l\sin\theta}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
+\ddot{\theta} & =\frac{m_{p}l\left[r\left(m_{c}+m_{p}\right)g\sin\theta-\left(K_{m}\left(q_{l}+q_{r}\right)+rm_{p}l\dot{\theta}^{2}\sin\theta\right)\cos\theta\right]}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}.\\
+\ddot{\psi} & =\frac{LK_{m}\left(q_{r}-q_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}\\
+\dot{\omega}_{l} & =\frac{K_{m}q_{l}-b\omega_{l}}{J_{m}}\\
+\dot{\omega}_{r} & =\frac{K_{m}q_{r}-b\omega_{r}}{J_{m}}\\
+\dot{q}_{l} & =\frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
+\dot{q}_{r} & =\frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}}.
+\end{align}
+
+\end_inset
+
+to obtain 
+\begin_inset Formula $V_{l}$
+\end_inset
+
+ and 
+\begin_inset Formula $V_{r}$
+\end_inset
+
+ to drive 
+\begin_inset Formula $\dot{x}_{c}\rightarrow\dot{x}_{c,d}$
+\end_inset
+
+, 
+\begin_inset Formula $\dot{\psi}\rightarrow\dot{\psi}_{d}$
+\end_inset
+
+, and 
+\begin_inset Formula $\theta\rightarrow0$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+We can then use the following equations to determine 
+\begin_inset Formula $\dot{x}_{c,d}$
+\end_inset
+
+ and 
+\begin_inset Formula $\dot{\psi}_{d}$
+\end_inset
+
+ for position control.
+\begin_inset Formula 
+\begin{align}
+\dot{X} & =\dot{x}_{c}\cos\psi\\
+\dot{Y} & =\dot{x}_{c}\sin\psi
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Define the state and input as
+\begin_inset Formula 
+\begin{equation}
+{\bf x}=\begin{bmatrix}\dot{x}_{c}-\dot{x}_{c,d}\\
+\dot{\psi}-\dot{\psi}_{d}\\
+\theta\\
+\dot{\theta}\\
+\omega_{l}\\
+\omega_{r}\\
+q_{l}\\
+q_{r}
+\end{bmatrix},\quad{\bf u}=\begin{bmatrix}V_{l}\\
+V_{r}
+\end{bmatrix},
+\end{equation}
+
+\end_inset
+
+and then for constant desired velocity and heading rate, the state evolves
+ according to
+\begin_inset Formula 
+\begin{equation}
+\dot{{\bf x}}=f\left({\bf x},{\bf u}\right)=\begin{bmatrix}\frac{-K_{m}\left(q_{l}+q_{r}\right)\left(J_{y}+m_{p}l^{2}\right)+r\left(m_{p}gl\cos\theta-\dot{\theta}^{2}\left(J_{y}+m_{p}l^{2}\right)\right)m_{p}l\sin\theta}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
+\frac{LK_{m}\left(q_{r}-q_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}\\
+\dot{\theta}\\
+\frac{m_{p}l\left[r\left(m_{c}+m_{p}\right)g\sin\theta-\left(K_{m}\left(q_{l}+q_{r}\right)+rm_{p}l\dot{\theta}^{2}\sin\theta\right)\cos\theta\right]}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
+\frac{K_{m}q_{l}-b\omega_{l}}{J_{m}}\\
+\frac{K_{m}q_{r}-b\omega_{r}}{J_{m}}\\
+\frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
+\frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}}
+\end{bmatrix}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We then define the system
+\begin_inset Formula 
+\begin{equation}
+\dot{{\bf x}}=A{\bf x}+B{\bf u},
+\end{equation}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\begin{align}
+A & =\frac{\partial f\left({\bf x},{\bf u}\right)}{\partial{\bf x}}\\
+B & =\frac{\partial f\left({\bf x},{\bf u}\right)}{\partial{\bf u}}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Given state and input error minimizing matrices 
+\begin_inset Formula $Q$
+\end_inset
+
+ and 
+\begin_inset Formula $R$
+\end_inset
+
+, respectively, we can now design an LQR controller, such that 
+\begin_inset Formula 
+\begin{equation}
+{\bf u}=-K{\bf x},
+\end{equation}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\begin{equation}
+K=R^{-1}B^{\top}P,
+\end{equation}
+
+\end_inset
+
+and 
+\begin_inset Formula $P$
+\end_inset
+
+ is computed by solving the Riccati equation
+\begin_inset Formula 
+\begin{equation}
+A^{\top}P+PA-PBR^{-1}B^{\top}P+Q=0.
+\end{equation}
+
+\end_inset
+
+This is solved efficiently using the Schur decomposition, where many implementat
+ions are available.
+\end_layout
+
+\begin_layout Standard
+Traditionally, the matrices 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $B$
+\end_inset
+
+ are computed once about a nominal state, but as the state deviates from
+ nominal, performance degrades.
+ Therefore, we compute 
+\begin_inset Formula $A$
+\end_inset
+
+ and 
+\begin_inset Formula $B$
+\end_inset
+
+ at every time step to achieve peak performance and greatly reduce linearization
+ error.
+ This is only possible in real time with a very efficient Riccati equation
+ solver and preferably analytical Jacobians.
+ 
+\end_layout
+
+\begin_layout Section
+Estimation
+\end_layout
+
+\begin_layout Section
+Guidance
+\end_layout
+
+\end_body
+\end_document
