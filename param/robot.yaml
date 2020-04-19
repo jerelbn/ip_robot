@@ -17,7 +17,7 @@ logname_true_state: /tmp/robot_true_state.log
 # Physical parameters
 x0: [0, # DX
      0, # DPSI
-     0, # THETA
+     3, # THETA
      0, # DTHETA
      0, # OMEGAL
      0, # OMEGAR

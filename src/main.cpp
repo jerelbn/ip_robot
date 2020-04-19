@@ -27,7 +27,7 @@ int main()
     {
         // Update vehicles, controllers, sensors, estimators
         Eigen::Vector2d u;
-        u << -0.01, -0.02;
+        u << 0, 0;
         robot.propagate(t, u);
         // robot_ctrl.computeControl(t, robot.x());
         // robot.updateAccelerations(robot_ctrl.u_);

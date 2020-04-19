@@ -264,7 +264,7 @@ We have the following variables of interest:
 \begin_inset Formula $L$
 \end_inset
 
- : half of wheel separation
+ : wheel separation
 \end_layout
 
 \begin_layout Itemize
@@ -367,7 +367,7 @@ The free body diagram is shown below.
 
 \begin_layout Standard
 Noting that 
-\begin_inset Formula $F_{f}=F_{l}+F_{r}$
+\begin_inset Formula $F_{w}=F_{l}+F_{r}$
 \end_inset
 
  and summing horizontal and vertical forces gives
@@ -407,8 +407,67 @@ where substituting these into the force summations on the cart gives
 \begin_inset Formula 
 \begin{align}
 \ddot{x}_{c} & =\frac{F_{l}+F_{r}-m_{p}\left(l\dot{\theta}^{2}\sin\theta-\ddot{\theta}l\cos\theta\right)}{m_{c}+m_{p}}\\
-\ddot{z}_{c} & =g-\frac{m_{p}}{m_{c}+m_{p}}\left(l\dot{\theta}^{2}\cos\theta+\ddot{\theta}l\sin\theta\right)-N_{gr}.
+\ddot{z}_{c} & =g-\frac{m_{p}l}{m_{c}+m_{p}}\left(\ddot{\theta}\sin\theta+\dot{\theta}^{2}\cos\theta\right)-\frac{N_{gr}}{m_{c}+m_{p}}.
 \end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For now, we will redefine 
+\begin_inset Formula $\ddot{x}_{c}$
+\end_inset
+
+ because 
+\begin_inset Formula $F_{l}$
+\end_inset
+
+, 
+\begin_inset Formula $F_{r}$
+\end_inset
+
+, and 
+\begin_inset Formula $\dot{x}_{c}$
+\end_inset
+
+ are couple with wheel velocities, assuming no slip.
+ The forward velocity may be written in terms of wheel velocities as
+\begin_inset Formula 
+\begin{equation}
+\dot{x}_{c}=\frac{v_{l}+v_{r}}{2},
+\end{equation}
+
+\end_inset
+
+which is the average of the wheel velocities.
+ Writing wheel velocities in terms of wheel angular rate and radius yields
+\begin_inset Formula 
+\begin{align}
+v_{l} & =-\omega_{l}r\\
+v_{r} & =-\omega_{r}r,
+\end{align}
+
+\end_inset
+
+and substituting this in gives
+\begin_inset Formula 
+\begin{equation}
+\dot{x}_{c}=-\frac{r}{2}\left(\omega_{l}+\omega_{r}\right).
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Taking a time derivative of this yields
+\begin_inset Formula 
+\begin{equation}
+\ddot{x}_{c}=-\frac{r}{2}\left(\dot{\omega}_{l}+\dot{\omega}_{r}\right).
+\end{equation}
 
 \end_inset
 
@@ -440,62 +499,20 @@ and using the previously given force relationships yields
 \end_layout
 
 \begin_layout Standard
-We're only concerned with angle and horizontal dynamics, leaving us with
- the system
+Heading changes according to the differential between wheel velocities as
 \begin_inset Formula 
 \begin{align}
-\ddot{x}_{c} & =\frac{F_{l}+F_{r}-m_{p}\left(l\dot{\theta}^{2}\sin\theta-\ddot{\theta}l\cos\theta\right)}{m_{c}+m_{p}}\\
-\ddot{\theta} & =\frac{m_{p}l\left(\left(g-\ddot{z}_{c}\right)\sin\theta+\ddot{x}_{c}\cos\theta\right)-b_{p}\dot{\theta}}{J_{y}+m_{p}l^{2}},
+\dot{\psi} & =\frac{1}{L}\left(v_{l}-v_{r}\right)\\
+ & =\frac{r}{L}\left(\omega_{r}-\omega_{l}\right),
 \end{align}
 
 \end_inset
 
-and solving for the accelerations yields
-\begin_inset Formula 
-\begin{align}
-\ddot{x}_{c} & =\frac{\left(J_{y}+m_{p}l^{2}\right)\left(F_{l}+F_{r}\right)+m_{p}l\left(\left(m_{p}gl\cos\theta-\left(J_{y}+m_{p}l^{2}\right)\dot{\theta}^{2}\right)\sin\theta-b_{p}\dot{\theta}\cos\theta\right)}{\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta}\\
-\ddot{\theta} & =\frac{m_{p}l\left[\left(m_{c}+m_{p}\right)g\sin\theta+\left(F_{l}+F_{r}-m_{p}l\dot{\theta}^{2}\sin\theta\right)\cos\theta\right]-\left(m_{c}+m_{p}\right)b_{p}\dot{\theta}}{\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta},
-\end{align}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Summing torques about that shaft 
-\begin_inset Formula $z$
-\end_inset
-
--axis gives
+and differentiating this w.r.t.
+ gives
 \begin_inset Formula 
 \begin{equation}
-\sum\tau_{z}=J_{z}\left(\theta\right)\ddot{\psi}=\left(F_{l}-F_{r}\right)L,
-\end{equation}
-
-\end_inset
-
-where we highlight the fact the inertial about the 
-\begin_inset Formula $z$
-\end_inset
-
--axis is a function of 
-\begin_inset Formula $\theta$
-\end_inset
-
- with minimum at 
-\begin_inset Formula $\theta=0$
-\end_inset
-
- and maximum at 
-\begin_inset Formula $\theta=\pm90^{\circ}$
-\end_inset
-
-.
- Let's assume a linear relationship given by
-\begin_inset Formula 
-\begin{equation}
-J_{z}\left(\theta\right)=J_{z}+J_{p}\theta.
+\ddot{\psi}=\frac{r}{L}\left(\dot{\omega}_{r}-\dot{\omega}_{l}\right).
 \end{equation}
 
 \end_inset
@@ -504,70 +521,81 @@ J_{z}\left(\theta\right)=J_{z}+J_{p}\theta.
 \end_layout
 
 \begin_layout Standard
-Torque about each wheel is directly related to motor torque by
-\begin_inset Formula 
-\begin{align}
-\tau_{l} & =-F_{l}r\\
-\tau_{r} & =-F_{r}r,
-\end{align}
-
-\end_inset
-
-which leaves us with the full system
-\begin_inset Formula 
-\begin{align}
-\ddot{x}_{c} & =\frac{rm_{p}l\left(\left(m_{p}gl\cos\theta-\left(J_{y}+m_{p}l^{2}\right)\dot{\theta}^{2}\right)\sin\theta-rb_{p}\dot{\theta}\cos\theta\right)-\left(J_{y}+m_{p}l^{2}\right)\left(\tau_{l}+\tau_{r}\right)}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
-\ddot{\theta} & =\frac{m_{p}l\left[\left(m_{c}+m_{p}\right)rg\sin\theta-\left(\tau_{l}+\tau_{r}+rm_{p}l\dot{\theta}^{2}\sin\theta\right)\cos\theta\right]-r\left(m_{c}+m_{p}\right)b_{p}\dot{\theta}}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
-\ddot{\psi} & =\frac{L\left(\tau_{r}-\tau_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}.
-\end{align}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-A real system doesn't allow us to directly command torque.
- However, we will use a brushless, DC motor, where motor torque 
-\begin_inset Formula $\tau_{m}$
-\end_inset
-
- and current 
+For an electric motor, define current as 
 \begin_inset Formula $q$
 \end_inset
 
- are related by 
-\begin_inset Formula $\tau_{m}=K_{m}q$
-\end_inset
-
- for some torque constant or back-emf constant 
+, the motor torque constant 
 \begin_inset Formula $K_{m}$
 \end_inset
 
+, and torque is related to these by 
+\begin_inset Formula $\tau_{m}=K_{m}q$
+\end_inset
+
 .
- Motor speed control follows the differential equations
+ Accounting for torques induced by angular and centripetal accelerations
+ of the pendulum, the sums of torques about the wheel centers are given
+ by
 \begin_inset Formula 
 \begin{align}
-J_{m}\dot{\omega}+b\omega & =K_{m}q\\
-L_{m}\dot{q}+R_{m}q & =V-K_{m}\omega,
+\sum\tau_{l}=J_{m}\dot{\omega}_{l} & =K_{m}q_{l}-b_{m}\omega_{l}+\frac{m_{p}rl}{2}\left(\dot{\theta}^{2}\sin\theta-\ddot{\theta}\cos\theta\right)\\
+\sum\tau_{r}=J_{m}\dot{\omega}_{r} & =K_{m}q_{r}-b_{m}\omega_{r}+\frac{m_{p}rl}{2}\left(\dot{\theta}^{2}\sin\theta-\ddot{\theta}\cos\theta\right),
 \end{align}
 
 \end_inset
 
-where we see the relationship between torque, current, voltage, and motor
- speed.
- We will use and ESC that controls motor speed by varying applied voltage
- with a PWM signal.
- We'll use voltage as the input in reality, we actually send a signal between
- -1 and 1 representing the percentage of maximum applied voltage.
- The system of equations then becomes
+where 
+\begin_inset Formula $b_{m}$
+\end_inset
+
+ is motor drag, and 
+\begin_inset Formula $J_{m}$
+\end_inset
+
+ is motor inertia.
+ The motor inertia 
+\begin_inset Formula $J_{m}$
+\end_inset
+
+ can be approximated as inertia of a point mass equal to the weight of the
+ entire robot revolving around the wheel as
+\begin_inset Formula 
+\begin{equation}
+J_{m}\approx\left(m_{c}+m_{p}\right)r^{2}.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We will use an ESC that controls motor speed by varying applied voltage
+ with a PWM signal, so voltage is actually our system control input.
+ We send a signal between -1 and 1 representing the percentage of maximum
+ applied voltage.
+ The relationship between current, voltage, and motor speed is given by
 \begin_inset Formula 
 \begin{align}
-\ddot{x}_{c} & =\frac{rm_{p}l\left(\left(m_{p}gl\cos\theta-\left(J_{y}+m_{p}l^{2}\right)\dot{\theta}^{2}\right)\sin\theta-rb_{p}\dot{\theta}\cos\theta\right)-K_{m}\left(J_{y}+m_{p}l^{2}\right)\left(q_{l}+q_{r}\right)}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
-\ddot{\theta} & =\frac{m_{p}l\left[\left(m_{c}+m_{p}\right)rg\sin\theta-\left(K_{m}\left(q_{l}+q_{r}\right)+rm_{p}l\dot{\theta}^{2}\sin\theta\right)\cos\theta\right]-r\left(m_{c}+m_{p}\right)b_{p}\dot{\theta}}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
-\ddot{\psi} & =\frac{LK_{m}\left(q_{r}-q_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}\\
-\dot{\omega}_{l} & =\frac{K_{m}q_{l}-b_{m}\omega_{l}}{J_{m}}\\
-\dot{\omega}_{r} & =\frac{K_{m}q_{r}-b_{m}\omega_{r}}{J_{m}}\\
+L_{m}\dot{q}_{l}+R_{m}q_{l} & =V_{l}-K_{m}\omega_{l}\\
+L_{m}\dot{q}_{r}+R_{m}q_{r} & =V_{r}-K_{m}\omega_{r}.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, we have the system
+\begin_inset Formula 
+\begin{align}
+\ddot{x}_{c} & =-\frac{r}{2}\left(\dot{\omega}_{l}+\dot{\omega}_{r}\right)\\
+\ddot{\theta} & =\frac{m_{p}l\left(\left(g-\ddot{z}_{c}\right)\sin\theta+\ddot{x}_{c}\cos\theta\right)-b_{p}\dot{\theta}}{J_{y}+m_{p}l^{2}}\\
+\ddot{\psi} & =\frac{r}{L}\left(\dot{\omega}_{r}-\dot{\omega}_{l}\right)\\
+\dot{\omega}_{l} & =\frac{2\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+m_{p}rl\left(\dot{\theta}^{2}\sin\theta-\ddot{\theta}\cos\theta\right)}{J_{m}}\\
+\dot{\omega}_{r} & =\frac{2\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+m_{p}rl\left(\dot{\theta}^{2}\sin\theta-\ddot{\theta}\cos\theta\right)}{J_{m}}\\
 \dot{q}_{l} & =\frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
 \dot{q}_{r} & =\frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}}.
 \end{align}
@@ -578,16 +606,60 @@ where we see the relationship between torque, current, voltage, and motor
 \end_layout
 
 \begin_layout Standard
-The motor inertia 
-\begin_inset Formula $J_{m}$
+Eliminating accelerations on the RHS and neglecting vertical motion gives
+\begin_inset Formula 
+\begin{align}
+\ddot{x}_{c} & =-\frac{r}{2}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\ddot{\theta} & =\frac{c_{0}g\sin\theta-b_{p}\dot{\theta}}{c_{1}}-\frac{c_{2}\cos\theta}{2c_{1}}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\ddot{\psi} & =\frac{r\left[2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\left(J_{m}+1\right)\right]\left[K_{m}\left(q_{r}-q_{l}\right)+b_{m}\left(\omega_{l}-\omega_{r}\right)\right]}{LJ_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\dot{\omega}_{l} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\dot{\omega}_{r} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\dot{q}_{l} & =\frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
+\dot{q}_{r} & =\frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}},
+\end{align}
+
 \end_inset
 
- can be approximated as inertia of a point mass equal to the weight of the
- entire robot revolving around the wheel as
+where
 \begin_inset Formula 
-\begin{equation}
-J_{m}\approx\left(m_{c}+m_{p}\right)r^{2}.
-\end{equation}
+\begin{align}
+c_{0} & =m_{p}l\\
+c_{1} & =J_{y}+c_{0}l\\
+c_{2} & =c_{0}r.
+\end{align}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Collecting all constants yields
+\begin_inset Formula 
+\begin{align}
+\ddot{x}_{c} & =-\frac{r}{2}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\ddot{\theta} & =\frac{c_{0}g\sin\theta-b_{p}\dot{\theta}}{c_{1}}-\frac{c_{2}\cos\theta}{2c_{1}}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\ddot{\psi} & =\frac{r\left[2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\left(J_{m}+1\right)\right]\left[K_{m}\left(q_{r}-q_{l}\right)+b_{m}\left(\omega_{l}-\omega_{r}\right)\right]}{LJ_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\dot{\omega}_{l} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\dot{\omega}_{r} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\dot{q}_{l} & =\frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
+\dot{q}_{r} & =\frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}},
+\end{align}
+
+\end_inset
+
+where
+\begin_inset Formula 
+\begin{align}
+c_{3} & =\\
+c_{4} & =\\
+c_{5} & =\\
+c_{6} & =\\
+c_{7} & =\\
+c_{8} & =\\
+c_{9} & =\\
+c_{10} & =
+\end{align}
 
 \end_inset
 
@@ -755,11 +827,11 @@ Control
 Design controller from
 \begin_inset Formula 
 \begin{align}
-\ddot{x}_{c} & =\frac{rm_{p}l\left(\left(m_{p}gl\cos\theta-\left(J_{y}+m_{p}l^{2}\right)\dot{\theta}^{2}\right)\sin\theta-rb_{p}\dot{\theta}\cos\theta\right)-K_{m}\left(J_{y}+m_{p}l^{2}\right)\left(q_{l}+q_{r}\right)}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
-\ddot{\theta} & =\frac{m_{p}l\left[\left(m_{c}+m_{p}\right)rg\sin\theta-\left(K_{m}\left(q_{l}+q_{r}\right)+rm_{p}l\dot{\theta}^{2}\sin\theta\right)\cos\theta\right]-r\left(m_{c}+m_{p}\right)b_{p}\dot{\theta}}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
-\ddot{\psi} & =\frac{LK_{m}\left(q_{r}-q_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}\\
-\dot{\omega}_{l} & =\frac{K_{m}q_{l}-b_{m}\omega_{l}}{J_{m}}\\
-\dot{\omega}_{r} & =\frac{K_{m}q_{r}-b_{m}\omega_{r}}{J_{m}}\\
+\ddot{x}_{c} & =-\frac{r}{2}\left(\dot{\omega}_{l}+\dot{\omega}_{r}\right)\\
+\ddot{\theta} & =\frac{c_{8}\sin\theta-\left(c_{2}K_{m}\left(q_{l}+q_{r}\right)+c_{4}\dot{\theta}^{2}\sin\theta\right)\cos\theta-c_{9}\dot{\theta}}{c_{3}-c_{4}\cos^{2}\theta}\\
+\ddot{\psi} & =\frac{K_{m}L\left(q_{r}-q_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}\\
+\dot{\omega}_{l} & =\frac{K_{m}\left(2c_{3}-3c_{4}\cos^{2}\theta\right)q_{l}-c_{4}K_{m}\cos^{2}\theta q_{r}-2\left(c_{3}-c_{4}\cos^{2}\theta\right)b_{m}\omega_{l}+c_{2}r\left(c_{3}\dot{\theta}^{2}\sin\theta+\left(c_{9}\dot{\theta}-c_{8}\sin\theta\right)\cos\theta\right)}{2J_{m}\left(c_{3}-c_{4}\cos^{2}\theta\right)}\\
+\dot{\omega}_{r} & =\frac{K_{m}\left(2c_{3}-3c_{4}\cos^{2}\theta\right)q_{r}-c_{4}K_{m}\cos^{2}\theta q_{l}-2\left(c_{3}-c_{4}\cos^{2}\theta\right)b_{m}\omega_{r}+c_{2}r\left(c_{3}\dot{\theta}^{2}\sin\theta+\left(c_{9}\dot{\theta}-c_{8}\sin\theta\right)\cos\theta\right)}{2J_{m}\left(c_{3}-c_{4}\cos^{2}\theta\right)}\\
 \dot{q}_{l} & =\frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
 \dot{q}_{r} & =\frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}}.
 \end{align}
@@ -834,12 +906,12 @@ and then for constant desired velocity and heading rate, the state evolves
  according to
 \begin_inset Formula 
 \begin{equation}
-\dot{{\bf x}}=f\left({\bf x},{\bf u}\right)=\begin{bmatrix}\frac{rm_{p}l\left(\left(m_{p}gl\cos\theta-\left(J_{y}+m_{p}l^{2}\right)\dot{\theta}^{2}\right)\sin\theta-rb_{p}\dot{\theta}\cos\theta\right)-K_{m}\left(J_{y}+m_{p}l^{2}\right)\left(q_{l}+q_{r}\right)}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
-\frac{LK_{m}\left(q_{r}-q_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}\\
+\dot{{\bf x}}=f\left({\bf x},{\bf u}\right)=\begin{bmatrix}-\frac{r}{2}\left(\dot{\omega}_{l}+\dot{\omega}_{r}\right)\\
+\frac{K_{m}L\left(q_{r}-q_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}\\
 \dot{\theta}\\
-\frac{m_{p}l\left[\left(m_{c}+m_{p}\right)rg\sin\theta-\left(K_{m}\left(q_{l}+q_{r}\right)+rm_{p}l\dot{\theta}^{2}\sin\theta\right)\cos\theta\right]-r\left(m_{c}+m_{p}\right)b_{p}\dot{\theta}}{r\left[\left(m_{c}+m_{p}\right)\left(J_{y}+m_{p}l^{2}\right)-m_{p}^{2}l^{2}\cos^{2}\theta\right]}\\
-\frac{K_{m}q_{l}-b_{m}\omega_{l}}{J_{m}}\\
-\frac{K_{m}q_{r}-b_{m}\omega_{r}}{J_{m}}\\
+\frac{c_{8}\sin\theta-\left(c_{2}K_{m}\left(q_{l}+q_{r}\right)+c_{4}\dot{\theta}^{2}\sin\theta\right)\cos\theta-c_{9}\dot{\theta}}{c_{3}-c_{4}\cos^{2}\theta}\\
+\frac{K_{m}\left(2c_{3}-3c_{4}\cos^{2}\theta\right)q_{l}-c_{4}K_{m}\cos^{2}\theta q_{r}-2\left(c_{3}-c_{4}\cos^{2}\theta\right)b_{m}\omega_{l}+c_{2}r\left(c_{3}\dot{\theta}^{2}\sin\theta+\left(c_{9}\dot{\theta}-c_{8}\sin\theta\right)\cos\theta\right)}{2J_{m}\left(c_{3}-c_{4}\cos^{2}\theta\right)}\\
+\frac{K_{m}\left(2c_{3}-3c_{4}\cos^{2}\theta\right)q_{r}-c_{4}K_{m}\cos^{2}\theta q_{l}-2\left(c_{3}-c_{4}\cos^{2}\theta\right)b_{m}\omega_{r}+c_{2}r\left(c_{3}\dot{\theta}^{2}\sin\theta+\left(c_{9}\dot{\theta}-c_{8}\sin\theta\right)\cos\theta\right)}{2J_{m}\left(c_{3}-c_{4}\cos^{2}\theta\right)}\\
 \frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
 \frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}}
 \end{bmatrix}.

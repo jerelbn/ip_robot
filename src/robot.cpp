@@ -59,11 +59,14 @@ void Robot::propagate(const double &t, const uVector &u)
 void Robot::f(const xVector &x, const uVector &u, xVector &dx)
 {
     // Constants
-    static double mp2 = mp_*mp_;
-    static double l2 = l_*l_;
-    static double M = mc_ + mp_;
-    static double Jmp = Jy_ + mp_*l2;
     static double g = common::gravity;
+    static double c0 = mp_*l_;
+    static double c1 = Jy_ + c0*l_;
+    static double c2 = c0*r_;
+    static double c22 = c2*c2;
+    static double c3 = 2.0*Jm_*c1;
+    static double c4 = 2.0*Jm_*c2;
+    static double c5 = c0*g;
 
     // Unpack states/inputs for readability
     double theta = x_(THETA);
@@ -78,17 +81,24 @@ void Robot::f(const xVector &x, const uVector &u, xVector &dx)
     // Common calcs
     double sin_theta = sin(theta);
     double cos_theta = cos(theta);
-    double denom = r_*(M*Jmp - mp2*l2*cos_theta*cos_theta);
-    double qpq = ql + qr;
+    double cos2_theta = cos_theta*cos_theta;
     double dtheta2 = dtheta*dtheta;
+    double v0 = c22*cos2_theta;
+    double v1 = (c1*dtheta2 - c5)*sin_theta - bp_*dtheta;
+    double v2 = c4*cos_theta*v1;
+    double v3 = Km_*(ql + qr);
+    double v4 = bm_*(omegal + omegar);
+    double v5 = Jm_*c2*cos_theta;
+    double v6 = c2*cos_theta;
+    double denom = Jm_*(Jm_*c1 - v0);
     
     // Equations of motion
-    dx(DX) = (r_*mp_*l_*((mp_*g*l_*cos_theta - Jmp*dtheta2)*sin_theta - r_*bp_*dtheta*cos_theta) - Km_*Jmp*qpq)/denom;
-    dx(DPSI) = L_*Km_*(qr - ql)/(r_*(Jz_ + Jp_*theta));
+    dx(DX) = -(r_/2.0)*((c3 + v0*(Jm_ - 1.0))*(v3 - v4) + v2)/denom;
+    dx(DPSI) = (r_/L_)*((c3 - v0*(Jm_ + 1.0))*(Km_*(qr - ql) + bm_*(omegal - omegar)))/denom;
     dx(THETA) = dtheta;
-    dx(DTHETA) = (mp_*l_*(M*r_*g*sin_theta - (Km_*qpq + r_*mp_*l_*dtheta2*sin_theta)*cos_theta) - r_*M*bp_*dtheta)/denom;
-    dx(OMEGAL) = (Km_*ql - bm_*omegal)/Jm_;
-    dx(OMEGAR) = (Km_*qr - bm_*omegar)/Jm_;
+    dx(DTHETA) = (c5*sin_theta-bp_*dtheta)/c1 - v6/(2.0*c1)*((c3 + v0*(Jm_-1.0))*(v3 - v4) + v2)/denom;
+    dx(OMEGAL) = ((c3 - v0)*(Km_*ql - bm_*omegal) + v5*(v6*(Km_*qr - bm_*omegar) + v1))/denom;
+    dx(OMEGAR) = ((c3 - v0)*(Km_*qr - bm_*omegar) + v5*(v6*(Km_*ql - bm_*omegal) + v1))/denom;
     dx(QL) = (Vl - Rm_*ql - Km_*omegal)/Lm_;
     dx(QR) = (Vr - Rm_*qr - Km_*omegar)/Lm_;
 }
