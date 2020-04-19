@@ -633,39 +633,6 @@ c_{2} & =c_{0}r.
 
 \end_layout
 
-\begin_layout Standard
-Collecting all constants yields
-\begin_inset Formula 
-\begin{align}
-\ddot{x}_{c} & =-\frac{r}{2}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
-\ddot{\theta} & =\frac{c_{0}g\sin\theta-b_{p}\dot{\theta}}{c_{1}}-\frac{c_{2}\cos\theta}{2c_{1}}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
-\ddot{\psi} & =\frac{r\left[2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\left(J_{m}+1\right)\right]\left[K_{m}\left(q_{r}-q_{l}\right)+b_{m}\left(\omega_{l}-\omega_{r}\right)\right]}{LJ_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
-\dot{\omega}_{l} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
-\dot{\omega}_{r} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
-\dot{q}_{l} & =\frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
-\dot{q}_{r} & =\frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}},
-\end{align}
-
-\end_inset
-
-where
-\begin_inset Formula 
-\begin{align}
-c_{3} & =\\
-c_{4} & =\\
-c_{5} & =\\
-c_{6} & =\\
-c_{7} & =\\
-c_{8} & =\\
-c_{9} & =\\
-c_{10} & =
-\end{align}
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsection
 Forward Velocity
 \end_layout
