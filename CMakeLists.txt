@@ -25,6 +25,7 @@ include_directories(include
 add_executable(main
     src/main.cpp
     src/robot.cpp
+    src/robot_ctrl_lqr.cpp
     )
 target_link_libraries(main
     ${CERES_LIBRARIES}

@@ -1,6 +1,7 @@
 #include "common_cpp/common.h"
 #include "common_cpp/progress_bar.h"
 #include "robot.h"
+#include "robot_ctrl_lqr.h"
 
 int main()
 {
@@ -20,17 +21,14 @@ int main()
 
     // Create vehicles, controllers, estimators, sensor packages
     robot::Robot robot("../param/robot.yaml");
-    //   robot::Controller robot_ctrl("../params/robot.yaml", rng);
+    robot::LQRController robot_ctrl("../param/robot.yaml");
 
     // Main simulation loop
     while (t <= tf+dt)
     {
         // Update vehicles, controllers, sensors, estimators
-        Eigen::Vector2d u;
-        u << 0, 0;
-        robot.propagate(t, u);
-        // robot_ctrl.computeControl(t, robot.x());
-        // robot.updateAccelerations(robot_ctrl.u_);
+        robot_ctrl.computeControl(t, robot.x(), 0.0, 0.0);
+        robot.propagate(t, robot_ctrl.u());
 
         // Update time step
         t += dt;

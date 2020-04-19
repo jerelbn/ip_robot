@@ -592,8 +592,8 @@ Thus, we have the system
 \begin_inset Formula 
 \begin{align}
 \ddot{x}_{c} & =-\frac{r}{2}\left(\dot{\omega}_{l}+\dot{\omega}_{r}\right)\\
-\ddot{\theta} & =\frac{m_{p}l\left(\left(g-\ddot{z}_{c}\right)\sin\theta+\ddot{x}_{c}\cos\theta\right)-b_{p}\dot{\theta}}{J_{y}+m_{p}l^{2}}\\
 \ddot{\psi} & =\frac{r}{L}\left(\dot{\omega}_{r}-\dot{\omega}_{l}\right)\\
+\ddot{\theta} & =\frac{m_{p}l\left(\left(g-\ddot{z}_{c}\right)\sin\theta+\ddot{x}_{c}\cos\theta\right)-b_{p}\dot{\theta}}{J_{y}+m_{p}l^{2}}\\
 \dot{\omega}_{l} & =\frac{2\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+m_{p}rl\left(\dot{\theta}^{2}\sin\theta-\ddot{\theta}\cos\theta\right)}{J_{m}}\\
 \dot{\omega}_{r} & =\frac{2\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+m_{p}rl\left(\dot{\theta}^{2}\sin\theta-\ddot{\theta}\cos\theta\right)}{J_{m}}\\
 \dot{q}_{l} & =\frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
@@ -610,8 +610,8 @@ Eliminating accelerations on the RHS and neglecting vertical motion gives
 \begin_inset Formula 
 \begin{align}
 \ddot{x}_{c} & =-\frac{r}{2}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
-\ddot{\theta} & =\frac{c_{0}g\sin\theta-b_{p}\dot{\theta}}{c_{1}}-\frac{c_{2}\cos\theta}{2c_{1}}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \ddot{\psi} & =\frac{r\left[2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\left(J_{m}+1\right)\right]\left[K_{m}\left(q_{r}-q_{l}\right)+b_{m}\left(\omega_{l}-\omega_{r}\right)\right]}{LJ_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\ddot{\theta} & =\frac{c_{0}g\sin\theta-b_{p}\dot{\theta}}{c_{1}}-\frac{c_{2}\cos\theta}{2c_{1}}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \dot{\omega}_{l} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \dot{\omega}_{r} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \dot{q}_{l} & =\frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
@@ -794,13 +794,13 @@ Control
 Design controller from
 \begin_inset Formula 
 \begin{align}
-\ddot{x}_{c} & =-\frac{r}{2}\left(\dot{\omega}_{l}+\dot{\omega}_{r}\right)\\
-\ddot{\theta} & =\frac{c_{8}\sin\theta-\left(c_{2}K_{m}\left(q_{l}+q_{r}\right)+c_{4}\dot{\theta}^{2}\sin\theta\right)\cos\theta-c_{9}\dot{\theta}}{c_{3}-c_{4}\cos^{2}\theta}\\
-\ddot{\psi} & =\frac{K_{m}L\left(q_{r}-q_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}\\
-\dot{\omega}_{l} & =\frac{K_{m}\left(2c_{3}-3c_{4}\cos^{2}\theta\right)q_{l}-c_{4}K_{m}\cos^{2}\theta q_{r}-2\left(c_{3}-c_{4}\cos^{2}\theta\right)b_{m}\omega_{l}+c_{2}r\left(c_{3}\dot{\theta}^{2}\sin\theta+\left(c_{9}\dot{\theta}-c_{8}\sin\theta\right)\cos\theta\right)}{2J_{m}\left(c_{3}-c_{4}\cos^{2}\theta\right)}\\
-\dot{\omega}_{r} & =\frac{K_{m}\left(2c_{3}-3c_{4}\cos^{2}\theta\right)q_{r}-c_{4}K_{m}\cos^{2}\theta q_{l}-2\left(c_{3}-c_{4}\cos^{2}\theta\right)b_{m}\omega_{r}+c_{2}r\left(c_{3}\dot{\theta}^{2}\sin\theta+\left(c_{9}\dot{\theta}-c_{8}\sin\theta\right)\cos\theta\right)}{2J_{m}\left(c_{3}-c_{4}\cos^{2}\theta\right)}\\
+\ddot{x}_{c} & =-\frac{r}{2}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\ddot{\psi} & =\frac{r\left[2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\left(J_{m}+1\right)\right]\left[K_{m}\left(q_{r}-q_{l}\right)+b_{m}\left(\omega_{l}-\omega_{r}\right)\right]}{LJ_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\ddot{\theta} & =\frac{c_{0}g\sin\theta-b_{p}\dot{\theta}}{c_{1}}-\frac{c_{2}\cos\theta}{2c_{1}}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\dot{\omega}_{l} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\dot{\omega}_{r} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \dot{q}_{l} & =\frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
-\dot{q}_{r} & =\frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}}.
+\dot{q}_{r} & =\frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}},
 \end{align}
 
 \end_inset
@@ -873,12 +873,12 @@ and then for constant desired velocity and heading rate, the state evolves
  according to
 \begin_inset Formula 
 \begin{equation}
-\dot{{\bf x}}=f\left({\bf x},{\bf u}\right)=\begin{bmatrix}-\frac{r}{2}\left(\dot{\omega}_{l}+\dot{\omega}_{r}\right)\\
-\frac{K_{m}L\left(q_{r}-q_{l}\right)}{r\left(J_{z}+J_{p}\theta\right)}\\
+\dot{{\bf x}}=f\left({\bf x},{\bf u}\right)=\begin{bmatrix}-\frac{r}{2}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\frac{r\left[2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\left(J_{m}+1\right)\right]\left[K_{m}\left(q_{r}-q_{l}\right)+b_{m}\left(\omega_{l}-\omega_{r}\right)\right]}{LJ_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \dot{\theta}\\
-\frac{c_{8}\sin\theta-\left(c_{2}K_{m}\left(q_{l}+q_{r}\right)+c_{4}\dot{\theta}^{2}\sin\theta\right)\cos\theta-c_{9}\dot{\theta}}{c_{3}-c_{4}\cos^{2}\theta}\\
-\frac{K_{m}\left(2c_{3}-3c_{4}\cos^{2}\theta\right)q_{l}-c_{4}K_{m}\cos^{2}\theta q_{r}-2\left(c_{3}-c_{4}\cos^{2}\theta\right)b_{m}\omega_{l}+c_{2}r\left(c_{3}\dot{\theta}^{2}\sin\theta+\left(c_{9}\dot{\theta}-c_{8}\sin\theta\right)\cos\theta\right)}{2J_{m}\left(c_{3}-c_{4}\cos^{2}\theta\right)}\\
-\frac{K_{m}\left(2c_{3}-3c_{4}\cos^{2}\theta\right)q_{r}-c_{4}K_{m}\cos^{2}\theta q_{l}-2\left(c_{3}-c_{4}\cos^{2}\theta\right)b_{m}\omega_{r}+c_{2}r\left(c_{3}\dot{\theta}^{2}\sin\theta+\left(c_{9}\dot{\theta}-c_{8}\sin\theta\right)\cos\theta\right)}{2J_{m}\left(c_{3}-c_{4}\cos^{2}\theta\right)}\\
+\frac{c_{0}g\sin\theta-b_{p}\dot{\theta}}{c_{1}}-\frac{c_{2}\cos\theta}{2c_{1}}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
+\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \frac{V_{l}-R_{m}q_{l}-K_{m}\omega_{l}}{L_{m}}\\
 \frac{V_{r}-R_{m}q_{r}-K_{m}\omega_{r}}{L_{m}}
 \end{bmatrix}.

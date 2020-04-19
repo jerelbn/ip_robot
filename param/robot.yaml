@@ -15,14 +15,16 @@ logname_true_state: /tmp/robot_true_state.log
 
 
 # Physical parameters
-x0: [0, # DX
+x0: [
+     0, # DX
      0, # DPSI
-     3, # THETA
+     0.1, # THETA
      0, # DTHETA
      0, # OMEGAL
      0, # OMEGAR
      0, # QL
-     0] # QR
+     0  # QR
+]
 
 mc: 0.3
 mp: 0.2
@@ -30,8 +32,8 @@ Jy: 0.011
 Jz: 9.0e-5
 Jp: 0.01
 Jm: 0.0013
-Km: 0.01
-Lm: 0.5
+Km: 0.02
+Lm: 0.05
 Rm: 1.0
 L: 0.1
 l: 0.2
@@ -43,19 +45,36 @@ max_voltage: 12.0
 
 
 # Controller
+ctrl_update_rate: 500
 
+ctrl_Q: [
+     # 1e0, # DX
+     # 1e0, # DPSI
+     1e0, # THETA
+     1e0, # DTHETA
+     1e0, # OMEGAL
+     1e0, # OMEGAR
+     1e0, # QL
+     1e0  # QR
+]
+ctrl_R: [
+     1e0, # VL
+     1e0  # VR
+]
 
 # Trajectory
 ## 0: waypoints
 ## 1: trajectory
 path_type: 1
 
-waypoints: [5, 0,
-            -5, 0,
-            0, 0,
-            0, 5,
-            0, -5,
-            0, 0]
+waypoints: [
+     5, 0,
+     -5, 0,
+     0, 0,
+     0, 5,
+     0, -5,
+     0, 0
+]
 waypoint_threshold: 0.1
 waypoint_velocity_threshold: 0.5
 
