@@ -8,6 +8,7 @@ plt.rc("text", usetex=True)
 plt.rc("font", family="serif")
 
 x = np.fromfile("/tmp/robot_true_state.log", dtype=np.float64).reshape(-1, 9)
+u = np.fromfile("/tmp/robot_lqr_command.log", dtype=np.float64).reshape(-1, 3)
 
 pw = plotWindow()
 
@@ -70,5 +71,20 @@ plt.xlabel("Time (s)")
 plt.plot(x[:,0], x[:,8], color="b", linewidth=2.0, label="Right")
 plt.legend()
 pw.addPlot("Motor Currents", f)
+
+f = plt.figure()
+plt.suptitle("Voltage Commands")
+plt.subplot(2, 1, 1)
+plt.grid(True)
+plt.ylabel("Left Motor Voltage (V)")
+plt.plot(u[:,0], u[:,1], color="b", linewidth=2.0, label="Left")
+plt.legend()
+plt.subplot(2, 1, 2)
+plt.grid(True)
+plt.ylabel("Right Motor Voltage (V)")
+plt.xlabel("Time (s)")
+plt.plot(u[:,0], u[:,2], color="b", linewidth=2.0, label="Right")
+plt.legend()
+pw.addPlot("Voltage Commands", f)
 
 pw.show()

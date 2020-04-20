@@ -34,12 +34,12 @@ Jp: 0.01
 Jm: 0.0013
 Km: 0.02
 Lm: 0.05
-Rm: 1.0
+Rm: 0.09
 L: 0.1
 l: 0.2
-r: 0.05
-bm: 0.1
-bp: 0.1
+r: 0.04
+bm: 0.05
+bp: 0.05
 
 max_voltage: 12.0
 
@@ -48,16 +48,16 @@ max_voltage: 12.0
 ctrl_update_rate: 500
 
 ctrl_Q: [
-     1e0, # THETA
-     1e0, # DTHETA
-     1e1, # OMEGAL
-     1e1, # OMEGAR
-     1e0, # QL
-     1e0  # QR
+     1.0e+2, # THETA
+     1.0e+1, # DTHETA
+     1.0e+2, # OMEGAL
+     1.0e+2, # OMEGAR
+     1.0e-6, # QL
+     1.0e-6  # QR
 ]
 ctrl_R: [
-     1e3, # VL
-     1e3  # VR
+     1.0e+0, # VL
+     1.0e+0  # VR
 ]
 
 # Trajectory

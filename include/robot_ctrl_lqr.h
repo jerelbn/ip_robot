@@ -36,6 +36,7 @@ private:
     Eigen::Matrix<double, NUM_INPUTS, NS> K_;
 
     int update_rate_;
+    double max_voltage_;
     double mc_;
     double mp_;
     double Jy_;
