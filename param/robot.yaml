@@ -48,12 +48,12 @@ max_voltage: 12.0
 ctrl_update_rate: 500
 
 ctrl_Q: [
-     1.0e+2, # THETA
-     1.0e+1, # DTHETA
+     1.0e+0, # THETA
+     1.0e+0, # DTHETA
      1.0e+2, # OMEGAL
      1.0e+2, # OMEGAR
-     1.0e-6, # QL
-     1.0e-6  # QR
+     1.0e+0, # QL
+     1.0e+0  # QR
 ]
 ctrl_R: [
      1.0e+0, # VL

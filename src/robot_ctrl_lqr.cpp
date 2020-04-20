@@ -69,12 +69,10 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
         // Define reference state
         double omegal_d = -(dx_d + L_ / 2.0 * dpsi_d) / r_;
         double omegar_d = -(dx_d - L_ / 2.0 * dpsi_d) / r_;
+        
         Eigen::Matrix<double, NS, 1> x_ref = x2;
         x_ref(2) = x2(2) - omegal_d;
         x_ref(3) = x2(3) - omegar_d;
-        std::cout << std::endl;
-        std::cout << x2(2) << ", " << omegal_d << std::endl;
-        std::cout << x2(3) << ", " << omegar_d << std::endl;
 
         // Compute control gain
         u_ = -K_ * x_ref;
