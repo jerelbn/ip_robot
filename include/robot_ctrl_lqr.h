@@ -1,11 +1,11 @@
 #pragma once
 
-#include <fstream>
-
 #include "common_cpp/common.h"
 #include "common_cpp/logger.h"
 #include "robot_common.h"
 #include "lin_alg_tools/care.h"
+
+#define NS 6 // number of states
 
 namespace robot
 {
@@ -24,16 +24,16 @@ public:
     const Eigen::Vector2d &u() const { return u_; }
 
 private:
-    CareSolver<6, NUM_INPUTS> solver_;
+    CareSolver<NS, NUM_INPUTS> solver_;
 
     bool initialized_;
     double t_prev_;
 
     uVector u_;
-    Eigen::Matrix<double,6,6> A_, P_, Q_;
-    Eigen::Matrix<double,6,2> B_;
+    Eigen::Matrix<double,NS,NS> A_, P_, Q_;
+    Eigen::Matrix<double,NS,2> B_;
     Eigen::Matrix2d R_, R_inv_;
-    Eigen::Matrix<double, NUM_INPUTS, 6> K_;
+    Eigen::Matrix<double, NUM_INPUTS, NS> K_;
 
     int update_rate_;
     double mc_;
@@ -53,8 +53,8 @@ private:
 
     common::Logger command_log_;
 
-    void f(const Eigen::Matrix<double,6,1> &x, const uVector &u, Eigen::Matrix<double,6,1> &dx);
-    void numericalAB(const Eigen::Matrix<double,6,1> &x, const uVector &u, Eigen::Matrix<double,6,6> &A, Eigen::Matrix<double,6,2> &B);
+    void f(const Eigen::Matrix<double,NS,1> &x, const uVector &u, Eigen::Matrix<double,NS,1> &dx);
+    void numericalAB(const Eigen::Matrix<double,NS,1> &x, const uVector &u, Eigen::Matrix<double,NS,NS> &A, Eigen::Matrix<double,NS,2> &B);
     void log(const double &t);
 };
 

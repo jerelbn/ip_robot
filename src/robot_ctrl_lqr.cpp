@@ -47,7 +47,13 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
     double dt = common::roundDecimal(t - t_prev_, 6);
     if (t == 0 || dt >= 1.0 / update_rate_)
     {
-        Eigen::Matrix<double,6,1> x2 = x.segment<6>(THETA);
+        Eigen::Matrix<double,NS,1> x2;
+        x2(0) = x(THETA);
+        x2(1) = x(DTHETA);
+        x2(2) = x(OMEGAL);
+        x2(3) = x(OMEGAR);
+        x2(4) = x(QL);
+        x2(5) = x(QR);
 
         // Copy the current state and time
         t_prev_ = t;
@@ -59,8 +65,14 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
         solver_.solve(P_, A_, B_, Q_, R_);
         K_ = R_inv_ * B_.transpose() * P_;
 
-        // Define reference state and compute control gain
-        Eigen::Matrix<double,6,1> x_ref = x.segment<6>(THETA);
+        // Define reference state
+        double omegal_d = -(dx_d + L_/2.0*dpsi_d)/r_;
+        double omegar_d = -(dx_d - L_/2.0*dpsi_d)/r_;
+        Eigen::Matrix<double,NS,1> x_ref = x2;
+        x_ref(2) = x2(2) - omegal_d;
+        x_ref(3) = x2(3) - omegar_d;
+
+        // Compute control gain
         u_ = -K_ * x_ref;
     }
 
@@ -115,7 +127,7 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
 //     dx(QR) = (Vr - Rm_ * qr - Km_ * omegar) / Lm_;
 // }
 
-void LQRController::f(const Eigen::Matrix<double,6,1> &x, const uVector &u, Eigen::Matrix<double,6,1> &dx)
+void LQRController::f(const Eigen::Matrix<double,NS,1> &x, const uVector &u, Eigen::Matrix<double,NS,1> &dx)
 {
     // Constants
     static double g = common::gravity;
@@ -160,12 +172,12 @@ void LQRController::f(const Eigen::Matrix<double,6,1> &x, const uVector &u, Eige
     dx(5) = (Vr - Rm_ * qr - Km_ * omegar) / Lm_;
 }
 
-void LQRController::numericalAB(const Eigen::Matrix<double,6,1> &x, const uVector &u, Eigen::Matrix<double,6,6> &A, Eigen::Matrix<double,6,2> &B)
+void LQRController::numericalAB(const Eigen::Matrix<double,NS,1> &x, const uVector &u, Eigen::Matrix<double,NS,NS> &A, Eigen::Matrix<double,NS,2> &B)
 {
     static const double eps = 1e-5;
-    static const Eigen::Matrix<double,6,6> Ix = Eigen::Matrix<double,6,6>::Identity();
+    static const Eigen::Matrix<double,NS,NS> Ix = Eigen::Matrix<double,NS,NS>::Identity();
     static const Eigen::Matrix2d Iu = Eigen::Matrix2d::Identity();
-    static Eigen::Matrix<double,6,1> xp, xm, dxp, dxm;
+    static Eigen::Matrix<double,NS,1> xp, xm, dxp, dxm;
     static uVector up, um;
     for (int i = 0; i < A.cols(); ++i)
     {

@@ -794,8 +794,6 @@ Control
 Design controller from
 \begin_inset Formula 
 \begin{align}
-\ddot{x}_{c} & =-\frac{r}{2}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
-\ddot{\psi} & =\frac{r\left[2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\left(J_{m}+1\right)\right]\left[K_{m}\left(q_{r}-q_{l}\right)+b_{m}\left(\omega_{l}-\omega_{r}\right)\right]}{LJ_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \ddot{\theta} & =\frac{c_{0}g\sin\theta-b_{p}\dot{\theta}}{c_{1}}-\frac{c_{2}\cos\theta}{2c_{1}}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \dot{\omega}_{l} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \dot{\omega}_{r} & =\frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
@@ -814,11 +812,11 @@ to obtain
 \end_inset
 
  to drive 
-\begin_inset Formula $\dot{x}_{c}\rightarrow\dot{x}_{c,d}$
+\begin_inset Formula $\omega_{l}\rightarrow\omega_{l,d}$
 \end_inset
 
 , 
-\begin_inset Formula $\dot{\psi}\rightarrow\dot{\psi}_{d}$
+\begin_inset Formula $\omega_{r}\rightarrow\omega_{r,d}$
 \end_inset
 
 , and 
@@ -827,6 +825,46 @@ to obtain
 
 .
  
+\end_layout
+
+\begin_layout Standard
+Since 
+\begin_inset Formula $\dot{x}_{c}$
+\end_inset
+
+ and 
+\begin_inset Formula $\dot{\psi}$
+\end_inset
+
+ are tied to wheel velocities, we must figure out what the reference wheel
+ velocities must be to command 
+\begin_inset Formula $\dot{x}_{c,d}$
+\end_inset
+
+ and 
+\begin_inset Formula $\dot{\psi}_{d}$
+\end_inset
+
+.
+ They are related by
+\begin_inset Formula 
+\begin{align}
+\dot{x}_{c,d} & =-\frac{r}{2}\left(\omega_{l,d}+\omega_{r,d}\right)\\
+\dot{\psi}_{d} & =\frac{r}{L}\left(\omega_{r,d}-\omega_{l,d}\right),
+\end{align}
+
+\end_inset
+
+and solving for desired wheel velocities yields
+\begin_inset Formula 
+\begin{align}
+\omega_{l,d} & =-\frac{1}{r}\left(\dot{x}_{c,d}+\frac{L}{2}\dot{\psi}_{d}\right)\\
+\omega_{r,d} & =-\frac{1}{r}\left(\dot{x}_{c,d}-\frac{L}{2}\dot{\psi}_{d}\right).
+\end{align}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -854,12 +892,10 @@ We can then use the following equations to determine
 Define the state and input as
 \begin_inset Formula 
 \begin{equation}
-{\bf x}=\begin{bmatrix}\dot{x}_{c}-\dot{x}_{c,d}\\
-\dot{\psi}-\dot{\psi}_{d}\\
-\theta\\
+{\bf x}=\begin{bmatrix}\theta\\
 \dot{\theta}\\
-\omega_{l}\\
-\omega_{r}\\
+\omega_{l}-\omega_{l,d}\\
+\omega_{r}-\omega_{r,d}\\
 q_{l}\\
 q_{r}
 \end{bmatrix},\quad{\bf u}=\begin{bmatrix}V_{l}\\
@@ -873,9 +909,7 @@ and then for constant desired velocity and heading rate, the state evolves
  according to
 \begin_inset Formula 
 \begin{equation}
-\dot{{\bf x}}=f\left({\bf x},{\bf u}\right)=\begin{bmatrix}-\frac{r}{2}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
-\frac{r\left[2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\left(J_{m}+1\right)\right]\left[K_{m}\left(q_{r}-q_{l}\right)+b_{m}\left(\omega_{l}-\omega_{r}\right)\right]}{LJ_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
-\dot{\theta}\\
+\dot{{\bf x}}=f\left({\bf x},{\bf u}\right)=\begin{bmatrix}\dot{\theta}\\
 \frac{c_{0}g\sin\theta-b_{p}\dot{\theta}}{c_{1}}-\frac{c_{2}\cos\theta}{2c_{1}}\frac{\left[2J_{m}c_{1}+c_{2}^{2}\cos^{2}\theta\left(J_{m}-1\right)\right]\left[K_{m}\left(q_{l}+q_{r}\right)-b_{m}\left(\omega_{l}+\omega_{r}\right)\right]+2J_{m}c_{2}\cos\theta\left[\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\
 \frac{\left(2J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)\left(K_{m}q_{r}-b_{m}\omega_{r}\right)+J_{m}c_{2}\cos\theta\left[c_{2}\cos\theta\left(K_{m}q_{l}-b_{m}\omega_{l}\right)+\left(c_{1}\dot{\theta}^{2}-c_{0}g\right)\sin\theta-b_{p}\dot{\theta}\right]}{J_{m}\left(J_{m}c_{1}-c_{2}^{2}\cos^{2}\theta\right)}\\

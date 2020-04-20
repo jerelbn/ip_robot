@@ -48,18 +48,16 @@ max_voltage: 12.0
 ctrl_update_rate: 500
 
 ctrl_Q: [
-     # 1e0, # DX
-     # 1e0, # DPSI
      1e0, # THETA
      1e0, # DTHETA
-     1e0, # OMEGAL
-     1e0, # OMEGAR
+     1e1, # OMEGAL
+     1e1, # OMEGAR
      1e0, # QL
      1e0  # QR
 ]
 ctrl_R: [
-     1e0, # VL
-     1e0  # VR
+     1e3, # VL
+     1e3  # VR
 ]
 
 # Trajectory
