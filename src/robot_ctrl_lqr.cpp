@@ -6,11 +6,13 @@ namespace robot
 LQRController::LQRController() : t_prev_(0), initialized_(false)
 {
     u_.setZero();
+    dx_int_ = 0;
 }
 
 LQRController::LQRController(const std::string &filename) : t_prev_(0), initialized_(false)
 {
     u_.setZero();
+    dx_int_ = 0;
     load(filename);
 }
 
@@ -66,6 +68,7 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
         x2(3) = x(OMEGAR);
         x2(4) = x(QL);
         x2(5) = x(QR);
+        x2(6) = dx_int_;
 
         // Reference state
         xref.setZero();
@@ -88,6 +91,10 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
         u_ = -K_ * xtilde;
         u_(VL) = common::saturate(u_(VL), max_voltage_, -max_voltage_);
         u_(VR) = common::saturate(u_(VR), max_voltage_, -max_voltage_);
+
+        // Integrate velocity error
+        if (u_(VL) != max_voltage_ && u_(VR) != max_voltage_)
+            dx_int_ += 10.0 * (-r_ / 2.0 * (x(OMEGAL) + x(OMEGAR)) - dx_d_) * dt;
     }
 
     // Log all data
@@ -137,6 +144,7 @@ void LQRController::f(const Eigen::Matrix<double, NS, 1> &x, const uVector &u, E
     dx(3) = ((c3 - v0) * (Km_ * qr - bm_ * omegar) + v5 * (v6 * (Km_ * ql - bm_ * omegal) + v1)) / denom;
     dx(4) = (Vl - Rm_ * ql - Km_ * omegal) / Lm_;
     dx(5) = (Vr - Rm_ * qr - Km_ * omegar) / Lm_;
+    dx(6) = -r_ / 2.0 * (omegal + omegar) - dx_d_;
 }
 
 void LQRController::numericalAB(const Eigen::Matrix<double, NS, 1> &x, const Eigen::Matrix<double, NS, 1> &xref, const uVector &u)

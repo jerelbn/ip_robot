@@ -5,7 +5,7 @@
 #include "robot_common.h"
 #include "lin_alg_tools/care.h"
 
-#define NS 6 // number of states
+#define NS 7 // number of states
 
 namespace robot
 {
@@ -34,6 +34,7 @@ private:
     Eigen::Matrix<double,NS,2> B_;
     Eigen::Matrix2d R_, R_inv_;
     Eigen::Matrix<double, NUM_INPUTS, NS> K_;
+    double dx_d_, dx_int_;
 
     int update_rate_;
     double max_voltage_;

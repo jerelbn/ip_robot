@@ -1,5 +1,5 @@
 # Parameters for time, randomness, environment, etc.
-tf: 10.0
+tf: 30.0
 dt: 0.001
 seed: -1 # negative forces random seed
 
@@ -38,8 +38,8 @@ Rm: 0.09
 L: 0.1
 l: 0.2
 r: 0.04
-bm: 0.05
-bp: 0.05
+bm: 0.01
+bp: 0.01
 
 max_voltage: 12.0
 
@@ -48,12 +48,13 @@ max_voltage: 12.0
 ctrl_update_rate: 500
 
 ctrl_Q: [
-     1.0e+0, # THETA
-     1.0e+0, # DTHETA
-     1.0e+0, # OMEGAL
-     1.0e+0, # OMEGAR
-     1.0e+0, # QL
-     1.0e+0  # QR
+     1.0e+2, # THETA
+     1.0e-6, # DTHETA
+     1.0e+2, # OMEGAL
+     1.0e+2, # OMEGAR
+     1.0e-6, # QL
+     1.0e-6, # QR
+     1.0e+3  # DX ERROR INTEGRATOR
 ]
 ctrl_R: [
      1.0e+0, # VL
