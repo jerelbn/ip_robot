@@ -52,6 +52,10 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
     {
         // Declarations
         Eigen::Matrix<double, NS, 1> xref, xtilde;
+        
+        // Collect desired forward velocity and heading rate
+        dx_d_ = dx_d;
+        dpsi_d_ = dpsi_d;
 
         // Copy the current state and time
         t_prev_ = t;
@@ -69,6 +73,7 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
         x2(4) = x(QL);
         x2(5) = x(QR);
         x2(6) = dx_int_;
+        x2(7) = dpsi_int_;
 
         // Reference state
         xref.setZero();
@@ -94,7 +99,10 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
 
         // Integrate velocity error
         if (u_(VL) != max_voltage_ && u_(VR) != max_voltage_)
-            dx_int_ += 10.0 * (-r_ / 2.0 * (x(OMEGAL) + x(OMEGAR)) - dx_d_) * dt;
+        {
+            dx_int_ += 20.0 * (-r_ / 2.0 * (x(OMEGAL) + x(OMEGAR)) - dx_d_) * dt;
+            dpsi_int_ += 20.0 * (r_ / L_ * (x(OMEGAR) - x(OMEGAL)) - dpsi_d_) * dt;
+        }
     }
 
     // Log all data
@@ -145,6 +153,7 @@ void LQRController::f(const Eigen::Matrix<double, NS, 1> &x, const uVector &u, E
     dx(4) = (Vl - Rm_ * ql - Km_ * omegal) / Lm_;
     dx(5) = (Vr - Rm_ * qr - Km_ * omegar) / Lm_;
     dx(6) = -r_ / 2.0 * (omegal + omegar) - dx_d_;
+    dx(7) = r_ / L_ * (omegar - omegal) - dpsi_d_;
 }
 
 void LQRController::numericalAB(const Eigen::Matrix<double, NS, 1> &x, const Eigen::Matrix<double, NS, 1> &xref, const uVector &u)
