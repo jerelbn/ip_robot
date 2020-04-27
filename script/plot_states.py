@@ -9,6 +9,7 @@ plt.rc("font", family="serif")
 
 x = np.fromfile("/tmp/robot_true_state.log", dtype=np.float64).reshape(-1, 9)
 u = np.fromfile("/tmp/robot_lqr_command.log", dtype=np.float64).reshape(-1, 3)
+# u = np.fromfile("/tmp/robot_pid_command.log", dtype=np.float64).reshape(-1, 3)
 
 pw = plotWindow()
 

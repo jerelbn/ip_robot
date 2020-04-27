@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.10)
 project(ip_robot)
 
 # default to release build
@@ -26,6 +26,7 @@ add_executable(main
     src/main.cpp
     src/robot.cpp
     src/robot_ctrl_lqr.cpp
+    src/robot_ctrl_pid.cpp
     )
 target_link_libraries(main
     ${CERES_LIBRARIES}

@@ -60,6 +60,17 @@ ctrl_R: [
      1.0e+0  # VR
 ]
 
+## PID
+kp_theta: 0.1
+ki_theta: 0
+kd_theta: 0
+tau_theta: 0.1
+
+kp_V: 500
+ki_V: 0
+kd_V: 100
+tau_V: 0.1
+
 # Trajectory
 ## 0: waypoints
 ## 1: trajectory
