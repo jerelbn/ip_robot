@@ -50,8 +50,8 @@ ctrl_update_rate: 500
 ctrl_Q: [
      1.0e+0, # THETA
      1.0e+0, # DTHETA
-     1.0e+2, # OMEGAL
-     1.0e+2, # OMEGAR
+     1.0e+0, # OMEGAL
+     1.0e+0, # OMEGAR
      1.0e+0, # QL
      1.0e+0  # QR
 ]

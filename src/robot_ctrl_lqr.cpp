@@ -48,6 +48,17 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
     double dt = common::roundDecimal(t - t_prev_, 6);
     if (t == 0 || dt >= 1.0 / update_rate_)
     {
+        // Declarations
+        Eigen::Matrix<double, NS, 1> xref, xtilde;
+
+        // Copy the current state and time
+        t_prev_ = t;
+
+        // Extract desired wheel rates
+        double omegal_d = -(dx_d + L_ / 2.0 * dpsi_d) / r_;
+        double omegar_d = -(dx_d - L_ / 2.0 * dpsi_d) / r_;
+
+        // Create LQR state
         Eigen::Matrix<double, NS, 1> x2;
         x2(0) = x(THETA);
         x2(1) = x(DTHETA);
@@ -56,26 +67,25 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
         x2(4) = x(QL);
         x2(5) = x(QR);
 
-        // Copy the current state and time
-        t_prev_ = t;
+        // Reference state
+        xref.setZero();
+        xref(2) = omegal_d;
+        xref(3) = omegar_d;
+
+        // Error state
+        xtilde = xref - x2;
+        // xtilde(2) = common::saturate(xtilde(2), 0.01, -0.01);
+        // xtilde(3) = common::saturate(xtilde(3), 0.01, -0.01);
 
         // Jacobians w.r.t. state and input
-        numericalAB(x2, u_, A_, B_);
+        numericalAB(x2, xref, u_);
 
         // Solve CARE
         solver_.solve(P_, A_, B_, Q_, R_);
         K_ = R_inv_ * B_.transpose() * P_;
 
-        // Define reference state
-        double omegal_d = -(dx_d + L_ / 2.0 * dpsi_d) / r_;
-        double omegar_d = -(dx_d - L_ / 2.0 * dpsi_d) / r_;
-        
-        Eigen::Matrix<double, NS, 1> x_ref = x2;
-        x_ref(2) = x2(2) - omegal_d;
-        x_ref(3) = x2(3) - omegar_d;
-
         // Compute control gain
-        u_ = -K_ * x_ref;
+        u_ = -K_ * xtilde;
         u_(VL) = common::saturate(u_(VL), max_voltage_, -max_voltage_);
         u_(VR) = common::saturate(u_(VR), max_voltage_, -max_voltage_);
     }
@@ -84,7 +94,7 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
     log(t);
 }
 
-void LQRController::f(const Eigen::Matrix<double, NS, 1> &x, const uVector &u, Eigen::Matrix<double, NS, 1> &dx)
+void LQRController::f(const Eigen::Matrix<double, NS, 1> &x, const uVector &u, Eigen::Matrix<double, NS, 1> &dx) const
 {
     // Constants
     static double g = common::gravity;
@@ -129,33 +139,68 @@ void LQRController::f(const Eigen::Matrix<double, NS, 1> &x, const uVector &u, E
     dx(5) = (Vr - Rm_ * qr - Km_ * omegar) / Lm_;
 }
 
-void LQRController::numericalAB(const Eigen::Matrix<double, NS, 1> &x, const uVector &u, Eigen::Matrix<double, NS, NS> &A, Eigen::Matrix<double, NS, 2> &B)
+void LQRController::numericalAB(const Eigen::Matrix<double, NS, 1> &x, const Eigen::Matrix<double, NS, 1> &xref, const uVector &u)
 {
     static const double eps = 1e-5;
     static const Eigen::Matrix<double, NS, NS> Ix = Eigen::Matrix<double, NS, NS>::Identity();
     static const Eigen::Matrix2d Iu = Eigen::Matrix2d::Identity();
-    static Eigen::Matrix<double, NS, 1> xp, xm, dxp, dxm;
+    static Eigen::Matrix<double, NS, 1> xtildep, xtildem, dxtildep, dxtildem;
     static uVector up, um;
-    for (int i = 0; i < A.cols(); ++i)
+
+    // Error state
+    Eigen::Matrix<double, NS, 1> xtilde = xref - x;
+
+    for (int i = 0; i < A_.cols(); ++i)
     {
-        xp = x + eps * Ix.col(i);
-        xm = x + -eps * Ix.col(i);
+        // Poke the error state
+        xtildep = xtilde + eps * Ix.col(i);
+        xtildem = xtilde + -eps * Ix.col(i);
 
-        f(xp, u, dxp);
-        f(xm, u, dxm);
+        // Error state derivatives
+        ftilde(eps, xref, xtildep, u, dxtildep);
+        ftilde(eps, xref, xtildem, u, dxtildem);
 
-        A.col(i) = (dxp - dxm) / (2.0 * eps);
+        // Derivative of dxtilde w.r.t. xtilde
+        A_.col(i) = (dxtildep - dxtildem) / (2.0 * eps);
     }
-    for (int i = 0; i < B.cols(); ++i)
+
+    for (int i = 0; i < B_.cols(); ++i)
     {
-        up = u + eps * Iu.col(i);
-        um = u + -eps * Iu.col(i);
+        // Poke the command vector
+        uVector up = u + eps * Iu.col(i);
+        uVector um = u + -eps * Iu.col(i);
 
-        f(x, up, dxp);
-        f(x, um, dxm);
+        // Error state derivatives
+        ftilde(eps, xref, xtilde, up, dxtildep);
+        ftilde(eps, xref, xtilde, um, dxtildem);
 
-        B.col(i) = (dxp - dxm) / (2.0 * eps);
+        // Derivative of dxtilde w.r.t. u_ref
+        B_.col(i) = (dxtildep - dxtildem) / (2.0 * eps);
     }
+}
+
+void LQRController::ftilde(const double &dt, const Eigen::Matrix<double,NS,1> &xref, const Eigen::Matrix<double,NS,1> &xtilde,
+                           const uVector &u, Eigen::Matrix<double,NS,1> &dxtilde) const
+{
+    // Declarations
+    static Eigen::Matrix<double, NS, 1> x, dx, xp, xm, xrefp, xrefm, xtildep, xtildem;
+
+    // 'True state'
+    x = xref + -xtilde;
+
+    // Derivative at current time
+    f(x, u, dx);
+
+    // Future and previous states
+    xp = x + dx * dt;
+    xm = x + -dx * dt;
+
+    // Future and previous error states
+    xtildep = xref - xp;
+    xtildem = xref - xm;
+
+    // Error state derivative
+    dxtilde = (xtildep - xtildem) / (2.0 * dt);
 }
 
 void LQRController::log(const double &t)

@@ -86,6 +86,102 @@ Jerel Nielsen
 \end_layout
 
 \begin_layout Section
+TODO
+\end_layout
+
+\begin_layout Itemize
+Graphics window
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+buttons to adjust gains, etc.
+\end_layout
+
+\begin_layout Itemize
+plotter view
+\end_layout
+
+\begin_layout Itemize
+3D view
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Real time simulation
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+run simulation with graphics/plots in real time
+\end_layout
+
+\begin_layout Itemize
+accept keyboard inputs
+\end_layout
+
+\begin_layout Itemize
+accept transmitter inputs
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Parameter Identification
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+explore ways to estimate parameters (L, r, etc.) during motion excitation
+\end_layout
+
+\begin_layout Itemize
+probably start with graph optimization
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Estimator for Observable States
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+create IMU and encoder sensors
+\end_layout
+
+\begin_layout Itemize
+start with complementary filter for pendulum angle with LPF on encoder velocity
+\end_layout
+
+\begin_layout Itemize
+create camera sensor
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+hook up with OpenCV to generate images
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+VI-EKF using IMU, encoders, and camera
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Graph SLAM
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+use front-end EKF for observable states (maybe just to RMEKF)
+\end_layout
+
+\begin_layout Itemize
+create back-end for global position/heading estimation and mapping
+\end_layout
+
+\end_deeper
+\begin_layout Section
 Notation
 \end_layout
 

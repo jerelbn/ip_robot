@@ -54,8 +54,10 @@ private:
 
     common::Logger command_log_;
 
-    void f(const Eigen::Matrix<double,NS,1> &x, const uVector &u, Eigen::Matrix<double,NS,1> &dx);
-    void numericalAB(const Eigen::Matrix<double,NS,1> &x, const uVector &u, Eigen::Matrix<double,NS,NS> &A, Eigen::Matrix<double,NS,2> &B);
+    void f(const Eigen::Matrix<double,NS,1> &x, const uVector &u, Eigen::Matrix<double,NS,1> &dx) const;
+    void ftilde(const double &dt, const Eigen::Matrix<double,NS,1> &xref, const Eigen::Matrix<double,NS,1> &xtilde,
+                const uVector &u, Eigen::Matrix<double,NS,1> &dxtilde) const;
+    void numericalAB(const Eigen::Matrix<double, NS, 1> &x, const Eigen::Matrix<double, NS, 1> &xref, const uVector &u);
     void log(const double &t);
 };
 

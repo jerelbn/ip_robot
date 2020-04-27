@@ -29,7 +29,7 @@ int main()
     while (t <= tf+dt)
     {
         // Update vehicles, controllers, sensors, estimators
-        robot_ctrl.computeControl(t, robot.x(), 1.0, 0.5);
+        robot_ctrl.computeControl(t, robot.x(), 1.0, 0.0);
         robot.propagate(t, robot_ctrl.u());
 
         // Update time step
