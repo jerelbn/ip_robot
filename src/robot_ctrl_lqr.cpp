@@ -7,12 +7,14 @@ LQRController::LQRController() : t_prev_(0), initialized_(false)
 {
     u_.setZero();
     dx_int_ = 0;
+    dpsi_int_ = 0;
 }
 
 LQRController::LQRController(const std::string &filename) : t_prev_(0), initialized_(false)
 {
     u_.setZero();
     dx_int_ = 0;
+    dpsi_int_ = 0;
     load(filename);
 }
 
@@ -54,15 +56,17 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
         Eigen::Matrix<double, NS, 1> xref, xtilde;
         
         // Collect desired forward velocity and heading rate
-        dx_d_ = dx_d;
-        dpsi_d_ = dpsi_d;
+        double dx = -r_/2.0*(x(OMEGAL) + x(OMEGAR));
+        double dpsi = r_/L_*(x(OMEGAR) - x(OMEGAL));
+        dx_d_ = dx + common::saturate(dx_d - dx, 0.1, -0.1);
+        dpsi_d_ = dpsi + common::saturate(dpsi_d - dpsi, 0.5, -0.5);
 
         // Copy the current state and time
         t_prev_ = t;
 
         // Extract desired wheel rates
-        double omegal_d = -(dx_d + L_ / 2.0 * dpsi_d) / r_;
-        double omegar_d = -(dx_d - L_ / 2.0 * dpsi_d) / r_;
+        double omegal_d = -(dx_d_ + L_ / 2.0 * dpsi_d_) / r_;
+        double omegar_d = -(dx_d_ - L_ / 2.0 * dpsi_d_) / r_;
 
         // Create LQR state
         Eigen::Matrix<double, NS, 1> x2;
@@ -82,8 +86,6 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
 
         // Error state
         xtilde = xref - x2;
-        // xtilde(2) = common::saturate(xtilde(2), 0.01, -0.01);
-        // xtilde(3) = common::saturate(xtilde(3), 0.01, -0.01);
 
         // Jacobians w.r.t. state and input
         numericalAB(x2, xref, u_);
@@ -98,10 +100,12 @@ void LQRController::computeControl(const double &t, const xVector &x, const doub
         u_(VR) = common::saturate(u_(VR), max_voltage_, -max_voltage_);
 
         // Integrate velocity error
+        double ki_dx = 20.0;
+        double ki_dpsi = 20.0;
         if (u_(VL) != max_voltage_ && u_(VR) != max_voltage_)
         {
-            dx_int_ += 20.0 * (-r_ / 2.0 * (x(OMEGAL) + x(OMEGAR)) - dx_d_) * dt;
-            dpsi_int_ += 20.0 * (r_ / L_ * (x(OMEGAR) - x(OMEGAL)) - dpsi_d_) * dt;
+            dx_int_ += ki_dx * (-r_ / 2.0 * (x(OMEGAL) + x(OMEGAR)) - dx_d_) * dt;
+            dpsi_int_ += ki_dpsi * (r_ / L_ * (x(OMEGAR) - x(OMEGAL)) - dpsi_d_) * dt;
         }
     }
 
