@@ -1,4 +1,5 @@
-build/
+build_release/
+build_debug/
 __pycache__/
 *.vscode
 *.lyx~

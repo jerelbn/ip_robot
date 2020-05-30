@@ -5,7 +5,7 @@ project(ip_robot)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
 endif(NOT CMAKE_BUILD_TYPE)
-set(CMAKE_CXX_FLAGS "-std=c++11")
+set(CMAKE_CXX_FLAGS "-std=c++14")
 
 find_package(Eigen3 REQUIRED)
 find_package(yaml-cpp REQUIRED)
@@ -13,6 +13,8 @@ find_package(Ceres REQUIRED)
 
 add_subdirectory(lib/common_cpp)
 add_subdirectory(lib/lin_alg_tools)
+
+add_definitions(-DPARAM_DIR="${CMAKE_CURRENT_SOURCE_DIR}/param")
 
 include_directories(include
     lib/common_cpp/include

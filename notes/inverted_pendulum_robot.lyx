@@ -126,6 +126,29 @@ accept transmitter inputs
 
 \end_deeper
 \begin_layout Itemize
+Path planner
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Given desired velocities and current state, find desired state (fix desired
+ angle at zero)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Nonlinear optimization on graph connecting 
+\end_layout
+
+\begin_layout Itemize
+optimization for feasible balance bot trajectory - fix desired velocity,
+ heading rate, pendulum angle over some time steps, fix initial input to
+ the current input and optimize following inputs as dynamics evolve 
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
 Parameter Identification
 \end_layout
 

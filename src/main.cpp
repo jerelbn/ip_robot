@@ -8,9 +8,9 @@ int main()
 {
     int seed;
     double t(0), tf, dt;
-    common::getYamlNode("seed", "../param/robot.yaml", seed);
-    common::getYamlNode("tf", "../param/robot.yaml", tf);
-    common::getYamlNode("dt", "../param/robot.yaml", dt);
+    common::getYamlNode("seed", std::string(PARAM_DIR)+"/robot.yaml", seed);
+    common::getYamlNode("tf", std::string(PARAM_DIR)+"/robot.yaml", tf);
+    common::getYamlNode("dt", std::string(PARAM_DIR)+"/robot.yaml", dt);
     if (seed < 0)
         seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine rng(seed);
@@ -21,9 +21,9 @@ int main()
     prog_bar.init(tf / dt, 40);
 
     // Create vehicles, controllers, estimators, sensor packages
-    robot::Robot robot("../param/robot.yaml");
-    // robot::LQRController robot_ctrl("../param/robot.yaml");
-    robot::PIDController robot_ctrl("../param/robot.yaml");
+    robot::Robot robot(std::string(PARAM_DIR)+"/robot.yaml");
+    // robot::LQRController robot_ctrl(std::string(PARAM_DIR)+"/robot.yaml");
+    robot::PIDController robot_ctrl(std::string(PARAM_DIR)+"/robot.yaml");
 
     // Main simulation loop
     while (t <= tf+dt)
